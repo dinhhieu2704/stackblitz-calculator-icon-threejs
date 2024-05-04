@@ -33,8 +33,20 @@ export class App implements OnInit {
     this.renderer = new THREE.WebGLRenderer();
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.render(this.scene, this.camera);
+    this.renderer.setPixelRatio(devicePixelRatio);
+    let component = this;
+    (function render() {
+      component.renderer.render(component.scene, component.camera);
+      // component.animateModel();
+      requestAnimationFrame(render);
+    })();
+    
     document.body.appendChild(this.renderer.domElement);
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+    this.controls.autoRotate = true;
+    this.controls.enableZoom = true;
+    this.controls.enablePan = true;
+    this.controls.update();
   }
 
   createScene() {
@@ -70,9 +82,9 @@ export class App implements OnInit {
     const icon = new THREE.Group();
 
     const base = this.createBase();
-    base.position.x = 10;
-    base.position.y = 10;
-    base.position.z = 10;
+    // base.position.x = 10;
+    // base.position.y = 10;
+    // base.position.z = 10;
     icon.add(base);
 
     return icon;
@@ -105,14 +117,17 @@ export class App implements OnInit {
     return baseBox;
   }
 
-  @HostListener('mousemove') animate(e: any) {
-    requestAnimationFrame(this.animate);
-
-    this.icon.rotation.x += 0.1;
-    this.icon.rotation.y += 0.1;
-
-    this.renderer.render(this.scene, this.camera);
+  ngAfterViewInit() {
   }
+
+  // @HostListener('mousemove') animate(e: any) {
+  //   requestAnimationFrame(this.animate);
+
+  //   this.icon.rotation.x += 0.1;
+  //   this.icon.rotation.y += 0.1;
+
+  //   this.renderer.render(this.scene, this.camera);
+  // }
 }
 
 bootstrapApplication(App);
