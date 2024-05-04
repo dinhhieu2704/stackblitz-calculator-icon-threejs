@@ -88,6 +88,36 @@ export class App implements OnInit {
     const screen = this.createCalculatorScreen();
     icon.add(screen);
 
+    const button1 = this.createButton(0xffffff);
+    button1.position.x = -1.2;
+    button1.position.y = -0.4;
+    button1.position.z = 0.82;
+    icon.add(button1);
+    
+    const button2 = this.createButton(0xffffff);
+    button2.position.x = 0;
+    button2.position.y = -0.4;
+    button2.position.z = 0.82;
+    icon.add(button2);
+    
+    const button3 = this.createButton(0xffb459);
+    button3.position.x = 1.2;
+    button3.position.y = -0.4;
+    button3.position.z = 0.82;
+    icon.add(button3);
+
+    const button4 = this.createLongButton(0xffffff);
+    button4.position.x = -0.6;
+    button4.position.y = -1.6;
+    button4.position.z = 0.552;
+    icon.add(button4);
+    
+    const button5 = this.createButton(0xffb459);
+    button5.position.x = 1.2;
+    button5.position.y = -1.6;
+    button5.position.z = 0.82;
+    icon.add(button5);
+
     return icon;
   }
 
@@ -147,17 +177,16 @@ export class App implements OnInit {
   createCalculatorScreen() {
     const shape = new THREE.Shape();
     const angleStep = Math.PI * 0.5;
-    const radius = 0.5;
+    const radius = 0.2;
 
-    shape.absarc(1.3, 1.3, radius, angleStep * 0, angleStep * 1, false);
-    shape.absarc(-1.3, 1.3, radius, angleStep * 1, angleStep * 2, false);
-    shape.absarc(-1.3, -1.3, radius, angleStep * 2, angleStep * 3, false);
-    shape.absarc(1.3, -1.3, radius, angleStep * 3, angleStep * 4, false);
-    // shape.bezierCurveTo(20, 10, 20, 10, 20, 10);
+    shape.absarc(1.5, 1.5, radius, angleStep * 0, angleStep * 1, false);
+    shape.absarc(-1.5, 1.5, radius, angleStep * 1, angleStep * 2, false);
+    shape.absarc(-1.5, -1.5, radius, angleStep * 2, angleStep * 3, false);
+    shape.absarc(1.5, -1.5, radius, angleStep * 3, angleStep * 4, false);
 
     let geometry = new THREE.ExtrudeGeometry(shape, {
       depth: 0.5,
-      bevelEnabled: true,
+      bevelEnabled: false,
       bevelThickness: 0.05,
       bevelSize: 0.05,
       bevelSegments: 20,
@@ -165,11 +194,49 @@ export class App implements OnInit {
     });
 
     geometry.center();
+    geometry.scale(1, 0.4, 1);
 
     const material = new THREE.MeshPhongMaterial({ color: 0xbd83fc });
     const screen = new THREE.Mesh(geometry, material);
     screen.position.z = 0.6;
+    screen.position.y = 1,6;
     return screen;
+  }
+
+  createButton(color: THREE.ColorRepresentation | undefined) {
+    const geometry = new THREE.CircleGeometry(0.5, 1000);
+    const material = new THREE.MeshPhongMaterial({ color: color });
+    const mesh = new THREE.Mesh(geometry, material);
+    return mesh;
+  }
+
+  createLongButton(color: THREE.ColorRepresentation | undefined) {
+    const shape = new THREE.Shape();
+    const angleStep = Math.PI * 0.5;
+    const radius = 0.3;
+
+    shape.absarc(1.2, 1.2, radius, angleStep * 0, angleStep * 1, false);
+    shape.absarc(-1.2, 1.2, radius, angleStep * 1, angleStep * 2, false);
+    shape.absarc(-1.2, -1.2, radius, angleStep * 2, angleStep * 3, false);
+    shape.absarc(1.2, -1.2, radius, angleStep * 3, angleStep * 4, false);
+
+    let geometry = new THREE.ExtrudeGeometry(shape, {
+      depth: 0.5,
+      bevelEnabled: false,
+      bevelThickness: 0.05,
+      bevelSize: 0.05,
+      bevelSegments: 20,
+      curveSegments: 20,
+    });
+
+    geometry.center();
+    geometry.scale(0.75, 0.3, 1);
+
+    const material = new THREE.MeshPhongMaterial({ color: color });
+    const longButton = new THREE.Mesh(geometry, material);
+    longButton.position.z = 0.6;
+    longButton.position.y = 1,5;
+    return longButton;
   }
 
   ngAfterViewInit() {
