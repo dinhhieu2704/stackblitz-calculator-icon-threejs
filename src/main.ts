@@ -198,7 +198,7 @@ export class App implements OnInit {
 
     const material = new THREE.MeshPhongMaterial({ color: 0xbd83fc });
     const screen = new THREE.Mesh(geometry, material);
-    screen.position.z = 0.6;
+    screen.position.z = 0.56;
     screen.position.y = 1,6;
     return screen;
   }
@@ -234,8 +234,6 @@ export class App implements OnInit {
 
     const material = new THREE.MeshPhongMaterial({ color: color });
     const longButton = new THREE.Mesh(geometry, material);
-    longButton.position.z = 0.6;
-    longButton.position.y = 1,5;
     return longButton;
   }
 
