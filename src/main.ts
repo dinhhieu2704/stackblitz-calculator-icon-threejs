@@ -82,10 +82,11 @@ export class App implements OnInit {
     const icon = new THREE.Group();
 
     const base = this.createBase();
-    // base.position.x = 10;
-    // base.position.y = 10;
-    // base.position.z = 10;
     icon.add(base);
+    const box = this.createCalculatorBox();
+    icon.add(box);
+    const screen = this.createCalculatorScreen();
+    icon.add(screen);
 
     return icon;
   }
@@ -93,7 +94,7 @@ export class App implements OnInit {
   createBase() {
     const shape = new THREE.Shape();
     const angleStep = Math.PI * 0.5;
-    const radius = 1;
+    const radius = 2;
 
     shape.absarc(2, 2, radius, angleStep * 0, angleStep * 1, false);
     shape.absarc(-2, 2, radius, angleStep * 1, angleStep * 2, false);
@@ -110,24 +111,69 @@ export class App implements OnInit {
     });
 
     geometry.center();
-    // geometry.rotateX(Math.PI);
 
     const material = new THREE.MeshPhongMaterial({ color: 0xbd83fc });
     const baseBox = new THREE.Mesh(geometry, material);
     return baseBox;
   }
 
-  ngAfterViewInit() {
+  createCalculatorBox() {
+    const shape = new THREE.Shape();
+    const angleStep = Math.PI * 0.5;
+    const radius = 0.5;
+
+    shape.absarc(2, 2, radius, angleStep * 0, angleStep * 1, false);
+    shape.absarc(-2, 2, radius, angleStep * 1, angleStep * 2, false);
+    shape.absarc(-2, -2, radius, angleStep * 2, angleStep * 3, false);
+    shape.absarc(2, -2, radius, angleStep * 3, angleStep * 4, false);
+
+    let geometry = new THREE.ExtrudeGeometry(shape, {
+      depth: 0.5,
+      bevelEnabled: true,
+      bevelThickness: 0.05,
+      bevelSize: 0.05,
+      bevelSegments: 20,
+      curveSegments: 20,
+    });
+
+    geometry.center();
+
+    const material = new THREE.MeshPhongMaterial({ color: 0xd0bfe3 });
+    const box = new THREE.Mesh(geometry, material);
+    box.position.z = 0.5;
+    return box;
   }
 
-  // @HostListener('mousemove') animate(e: any) {
-  //   requestAnimationFrame(this.animate);
+  createCalculatorScreen() {
+    const shape = new THREE.Shape();
+    const angleStep = Math.PI * 0.5;
+    const radius = 0.5;
 
-  //   this.icon.rotation.x += 0.1;
-  //   this.icon.rotation.y += 0.1;
+    shape.absarc(1.3, 1.3, radius, angleStep * 0, angleStep * 1, false);
+    shape.absarc(-1.3, 1.3, radius, angleStep * 1, angleStep * 2, false);
+    shape.absarc(-1.3, -1.3, radius, angleStep * 2, angleStep * 3, false);
+    shape.absarc(1.3, -1.3, radius, angleStep * 3, angleStep * 4, false);
+    // shape.bezierCurveTo(20, 10, 20, 10, 20, 10);
 
-  //   this.renderer.render(this.scene, this.camera);
-  // }
+    let geometry = new THREE.ExtrudeGeometry(shape, {
+      depth: 0.5,
+      bevelEnabled: true,
+      bevelThickness: 0.05,
+      bevelSize: 0.05,
+      bevelSegments: 20,
+      curveSegments: 20,
+    });
+
+    geometry.center();
+
+    const material = new THREE.MeshPhongMaterial({ color: 0xbd83fc });
+    const screen = new THREE.Mesh(geometry, material);
+    screen.position.z = 0.6;
+    return screen;
+  }
+
+  ngAfterViewInit() {
+  }
 }
 
 bootstrapApplication(App);
